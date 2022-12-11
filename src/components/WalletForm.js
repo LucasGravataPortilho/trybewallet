@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getCurrencies } from '../redux/actions';
+import { getCurrencies, saveAllExpenses } from '../redux/actions';
 
 class WalletForm extends Component {
   constructor() {
@@ -26,6 +26,23 @@ class WalletForm extends Component {
     this.setState({
       [name]: value,
     });
+  };
+
+  handleClick = () => {
+    const { dispatch, expenses } = this.props;
+    const obj = {
+      ...this.state,
+      id: expenses.length === 0 ? 0 : expenses[expenses.length - 1].id + 1,
+    };
+    this.setState({
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+    });
+    dispatch(saveAllExpenses(obj));
+    console.log(expenses);
   };
 
   render() {
@@ -103,6 +120,13 @@ class WalletForm extends Component {
             <option value="Saúde">Saúde</option>
           </select>
         </label>
+
+        <button
+          type="button"
+          onClick={ this.handleClick }
+        >
+          Adicionar despesa
+        </button>
       </div>
     );
   }
@@ -110,6 +134,7 @@ class WalletForm extends Component {
 
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
+  expenses: state.wallet.expenses,
 });
 
 WalletForm.propTypes = {
