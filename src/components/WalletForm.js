@@ -42,7 +42,7 @@ class WalletForm extends Component {
       tag: 'Alimentação',
     });
     dispatch(saveAllExpenses(obj));
-    console.log(expenses);
+    // console.log(expenses);
   };
 
   render() {
